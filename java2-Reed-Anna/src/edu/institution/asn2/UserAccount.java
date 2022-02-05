@@ -14,6 +14,12 @@ public abstract class UserAccount implements Serializable {
 		setPassword(null);
 		setType(null); 
 	}
+	
+	public UserAccount (String username, String password) {
+		setUsername(username);
+		setPassword(password);
+		setType(null); 
+	}
 	public UserAccount (String username, String password, String type) {
 		setUsername(username);
 		setPassword(password);

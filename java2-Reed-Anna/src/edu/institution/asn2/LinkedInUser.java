@@ -12,9 +12,12 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 	public LinkedInUser () {
 		super(); //super calls back to the base class
 	}
+	public LinkedInUser (String username, String password) {
+		super(username, password);
+	}
 	public LinkedInUser (String username, String password, String type) {
 		super(username, password, type); 
-	}
+	} 
 	
 	
 	//methods 

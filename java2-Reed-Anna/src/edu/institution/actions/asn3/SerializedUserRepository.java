@@ -17,6 +17,10 @@ import edu.institution.asn2.LinkedInException;
 import edu.institution.asn2.LinkedInUser;
 
 public class SerializedUserRepository implements UserRepository, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4498439148211156781L;
 	private String filePath;
 	private String fileName;
 	private List<LinkedInUser> users;
@@ -62,14 +66,14 @@ public class SerializedUserRepository implements UserRepository, Serializable {
 		if(user.getUsername().isBlank() || user.getType().isBlank()) {
 			throw new LinkedInException("The username and type are required to add a new user.");
 		}
-		else if (user.getType().equalsIgnoreCase("p") || user.getType().equalsIgnoreCase("s")) {
+		else if (!(user.getType().equalsIgnoreCase("p") || user.getType().equalsIgnoreCase("s"))) {
 			throw new LinkedInException("Invalid user type. Valid user types are P or S");
 		}
 		else if (users.contains(user.getUsername())) {
 			throw new LinkedInException("A user already exists eith that user name");
 		}
-		else {
-			this.users.add(user); //adds a user from your list if no exception is thrown
+		else {//WHY YOU SO MAD BRO
+			users.add(user); //adds a user from your list if no exception is thrown
 			saveAll();
 		} 
 	}
@@ -111,8 +115,9 @@ public class SerializedUserRepository implements UserRepository, Serializable {
 
 	@Override
 	public List<LinkedInUser> retrieveAll() {
-		if (this.users.isEmpty()) {
-			return null;
+		List<LinkedInUser> newList = new ArrayList<>();
+		if (this.users == null) {
+			return newList; 
 		}
 		List<LinkedInUser> listAll = new ArrayList<>(this.users);
 		return listAll;
