@@ -1,4 +1,4 @@
-package edu.institution;
+package edu.institution.asn2;
 
 public class LinkedInException extends Exception {
 

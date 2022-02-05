@@ -1,8 +1,9 @@
-package edu.institution;
+package edu.institution.asn2;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class UserAccount {
+public abstract class UserAccount implements Serializable {
 	private String username;
 	private String password;
 	private String type;
@@ -11,7 +12,7 @@ public abstract class UserAccount {
 	public UserAccount () {
 		setUsername(null);
 		setPassword(null);
-		setType(null);
+		setType(null); 
 	}
 	public UserAccount (String username, String password, String type) {
 		setUsername(username);
@@ -26,7 +27,6 @@ public abstract class UserAccount {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 
 	public String getPassword() {
 		return password;

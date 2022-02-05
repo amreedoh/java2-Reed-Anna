@@ -1,9 +1,10 @@
-package edu.institution;
+package edu.institution.asn2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser>{
+public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser>, Serializable{
 
 	private List<LinkedInUser> connections = new ArrayList<>();
 	
@@ -12,11 +13,11 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 		super(); //super calls back to the base class
 	}
 	public LinkedInUser (String username, String password, String type) {
-		super(username, password, type);
+		super(username, password, type); 
 	}
 	
 	
-	//methods
+	//methods 
 	public void addConnection(LinkedInUser user) throws LinkedInException {
 		
 		if (connections.contains(user)) {
