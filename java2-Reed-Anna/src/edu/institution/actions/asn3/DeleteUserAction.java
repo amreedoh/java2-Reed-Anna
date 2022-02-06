@@ -14,7 +14,8 @@ public class DeleteUserAction implements MenuAction {
 		System.out.print("User name to delete: ");
 		String deleteUser = scanner.nextLine();
 		
-		if (userRepository.retrieve(deleteUser).getUsername().equalsIgnoreCase(deleteUser)) {//checks if user is in repo
+		if (userRepository.retrieve(deleteUser) != null) {//checks if user is in repo
+			System.out.println(userRepository.retrieve(deleteUser).getPassword());
 			System.out.print("Password: ");
 			String deletePass = scanner.nextLine();
 			
@@ -25,7 +26,7 @@ public class DeleteUserAction implements MenuAction {
 				}
 			}
 			else {
-				System.out.println("User names do not match.");
+				System.out.println("Passwords do not match.");
 			}
 		}
 		else {

@@ -17,103 +17,95 @@ import edu.institution.asn2.LinkedInException;
 import edu.institution.asn2.LinkedInUser;
 
 public class SerializedUserRepository implements UserRepository, Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4498439148211156781L;
 	private String filePath;
 	private String fileName;
-	private List<LinkedInUser> users;
+	private List<LinkedInUser> users = new ArrayList<>();
 	
-	@Override
+	@Override //working
 	public void init(String filePath, String fileName) {
 		//reads data from file and loads it
 		this.filePath = filePath;
 		this.fileName = fileName;
-
-		try{
-			File userFile = new File(filePath + fileName);
-			if (!userFile.exists()) {	//if files does not exist create a new one
-				userFile.createNewFile();
+ 
+		File userFile = new File(filePath + fileName);
+		if(userFile.exists()) {
+			try(FileInputStream fis = new FileInputStream(userFile);
+					ObjectInputStream ois = new ObjectInputStream (fis)){
+				this.users = (List<LinkedInUser>) ois.readObject();
+			} catch (Exception exception) {
+				throw new RuntimeException(exception);
 			}
-			FileInputStream fis = new FileInputStream(userFile);
-			
-			if (userFile.length() > 0) { //if file is not empty load it into the array
-				ObjectInputStream input = new ObjectInputStream(fis);
-				LinkedInUser temp = new LinkedInUser();
-				temp = (LinkedInUser) input.readObject();
-				while(temp != null) {
-					users.add(temp); //puts user in array
-					temp = (LinkedInUser) input.readObject(); //reads in next user or null
-				}
-			input.close(); //closing streams
-			fis.close();
+		}else {
+			//makes sure path exists
+			new File(filePath).mkdirs();
+			File file = new File(filePath + fileName);
+			try {
+				file.createNewFile();
+			} catch (Exception exception) {
+				throw new RuntimeException(exception);
 			}
-			
-		} catch (FileNotFoundException e) { //Opening file has failed
-			e.printStackTrace();
-		} catch (IOException e) { //I/O operation was interrupted
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) { //Object in file not compatible with object stated
-			e.printStackTrace();
 		}
 	}
 
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void add(LinkedInUser user) throws LinkedInException {
 		
 		if(user.getUsername().isBlank() || user.getType().isBlank()) {
 			throw new LinkedInException("The username and type are required to add a new user.");
 		}
-		else if (!(user.getType().equalsIgnoreCase("p") || user.getType().equalsIgnoreCase("s"))) {
+		if (!(user.getType().equalsIgnoreCase("p") || user.getType().equalsIgnoreCase("s"))) {
 			throw new LinkedInException("Invalid user type. Valid user types are P or S");
 		}
-		else if (users.contains(user.getUsername())) {
-			throw new LinkedInException("A user already exists eith that user name");
+		for (int i = 0; i < users.size(); i++) {
+			if(users.get(i).equals(user)) {
+				throw new LinkedInException("A user already exists eith that user name");
+			}
 		}
-		else {//WHY YOU SO MAD BRO
-			users.add(user); //adds a user from your list if no exception is thrown
-			saveAll();
-		} 
+		
+		//if(true) {throw new LinkedInException("did you catch me??");}
+		users.add(user); //adds a user from your list if no exception is thrown
+		saveAll();
 	}
 
-	@Override
+	@Override //working
 	public void saveAll() {
 		//should either create a new file or delete existing file and save what you have, easier than an update
-		try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filePath + fileName));){
-			//this should cycle through users array list and add them to the file
-			for(int i = 0; i < users.size(); i++) {
-				output.writeObject(users.get(i));
-			}
-			
-			output.close(); //closing streams
-		} catch (FileNotFoundException e) {
-			//Opening file has failed               
-			e.printStackTrace();
-		} catch (IOException e) {
-			//I/O operation was interrupted
-			e.printStackTrace();
+		File file = new File(filePath + fileName);
+		if(file.exists()) {
+			file.delete();
+		}
+		
+		//makes sure path exists
+		new File(filePath).mkdirs();
+		
+		try(FileOutputStream fout = new FileOutputStream(file);
+				ObjectOutputStream oos = new ObjectOutputStream(fout);){
+			oos.writeObject(this.users);
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 		
 	}
 
-	@Override
+	@Override //working
 	public void delete(LinkedInUser user) {
 		this.users.remove(user); //removes a user from your list
 	}
 
-	@Override
+	@Override //working
 	public LinkedInUser retrieve(String username) {
 		for(int i = 0; i < this.users.size(); i++) { //will go through all users looking for a match 
-			if (username == this.users.get(i).getUsername()) {
+			if (username.equalsIgnoreCase(this.users.get(i).getUsername())) {
 				return this.users.get(i);
 			}
 		}
 		return null; //if none is found will return null
 	}
 
-	@Override
+	@Override //working
 	public List<LinkedInUser> retrieveAll() {
 		List<LinkedInUser> newList = new ArrayList<>();
 		if (this.users == null) {

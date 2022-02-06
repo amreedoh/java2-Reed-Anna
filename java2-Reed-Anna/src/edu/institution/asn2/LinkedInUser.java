@@ -44,7 +44,7 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 		List<LinkedInUser> copyCon = new ArrayList<>(connections);
 		return copyCon;
 	}
-
+ 
 	
 
 	@Override

@@ -28,5 +28,5 @@ public class LinkedInCLI {
 		userRepository.init(PATH, FILE_NAME);
 		ApplicationController controller = new ApplicationController(userRepository);
 		controller.process();
-	}
+	} 	
 }

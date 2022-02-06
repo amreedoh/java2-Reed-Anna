@@ -24,9 +24,11 @@ public class AddUserAction implements MenuAction {
 		LinkedInUser newUser = new LinkedInUser(userName, userPass, userType);
 		
 		try {
+			//if(true) {throw new LinkedInException("last resort");}
 			userRepository.add(newUser);
+			
 		} catch (LinkedInException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 		
 		

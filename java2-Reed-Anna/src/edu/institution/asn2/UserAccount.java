@@ -52,11 +52,11 @@ public abstract class UserAccount implements Serializable {
 	public boolean isPasswordCorrect(String password) {
 		boolean test = false;
 		
-		if (password == this.password)
+		if (password.equals(this.password))
 			test = true;	//if the passwords match a true value is returned
-		else if (password == null)
+		else if (password.isBlank())
 			test = false;
-		else if (password != this.password)
+		else if (!(password.equals(this.password)))
 			test = false;	//if the passwords don't match a false value is returned
 		return test;
 	}
