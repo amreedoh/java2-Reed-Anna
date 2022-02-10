@@ -15,7 +15,7 @@ public class DeleteUserAction implements MenuAction {
 		String deleteUser = scanner.nextLine();
 		
 		if (userRepository.retrieve(deleteUser) != null) {//checks if user is in repo
-			System.out.println(userRepository.retrieve(deleteUser).getPassword());
+			//System.out.println(userRepository.retrieve(deleteUser).getPassword());
 			System.out.print("Password: ");
 			String deletePass = scanner.nextLine();
 			
