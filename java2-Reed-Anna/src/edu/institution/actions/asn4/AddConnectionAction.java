@@ -29,6 +29,12 @@ public class AddConnectionAction implements MenuAction {
 			System.out.println(e);
 			return true;
 		}
+		try { //will also add you to your friends connection list
+			userRepository.retrieve(newFriend).addConnection(loggedInUser);
+		}catch(LinkedInException e){
+			System.out.println(e);
+			return true;
+		}
 		System.out.println("The connection was added successfully.");
 		
 		

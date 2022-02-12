@@ -27,6 +27,12 @@ public class RemoveConnectionAction implements MenuAction {
 			System.out.println(e);
 			return true;
 		}
+		try {//will also remove you from your friends list
+			userRepository.retrieve(badFriend).removeConnection(loggedInUser);
+		}catch(LinkedInException e){
+			System.out.println(e);
+			return true;
+		}
 		System.out.println("The connection was removed successfully.");
 		
 		return true;
