@@ -66,7 +66,7 @@ public class DegreeOfSeparationAction implements MenuAction {
 		//- Loop through startUser's connections.
 		for (int loop = 0; loop < startConnections.size(); loop++) {
 			// - if the connection is in the ignore set, then continue to the next connection because we've already checked that connection.
-			if (startConnections.get(loop).equals(ignore)){
+			if (ignore.contains(startConnections.get(loop))){
 				continue;
 			}
 			

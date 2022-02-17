@@ -73,12 +73,12 @@ public abstract class UserAccount implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		/*if (this.equals(obj))
 			return true;
-		if (obj == null)
+		if (obj.equals(null))
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (!this.getClass().equals(obj.getClass()))
+			return false;*/
 		UserAccount other = (UserAccount) obj;
 		return Objects.equals(username, other.username);
 	}
