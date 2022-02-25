@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser>, Serializable{
-
+	private static final long serialVersionUID = 4498439148211156781L;
 	private List<LinkedInUser> connections = new ArrayList<>();
 	
 	//Constructors for LinkedInUser
@@ -50,13 +50,25 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 	@Override
 	public int compareTo(LinkedInUser compareUser) {
 		
-		if (this.getUsername() == null) {
+		if (this.getUsername().isEmpty()) {
 			return -1;
 		}
-		if (compareUser.getUsername() == null) {
+		if (compareUser.getUsername().isEmpty()) {
 			return 1;
 		}
 		
 		return this.getUsername().compareToIgnoreCase(compareUser.getUsername());
+	}
+	
+	public int compareByConnections(LinkedInUser compareUser) {
+		
+		if (this.getUsername().isEmpty()) {
+			return -1;
+		}
+		if (compareUser.getUsername().isEmpty()) {
+			return 1;
+		}
+		
+		return Integer.compare(this.getConnections().size(), compareUser.getConnections().size());
 	}
 }

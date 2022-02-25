@@ -25,6 +25,7 @@ public class DegreeOfSeparationAction implements MenuAction {
 		LinkedInUser endUser = userRepository.retrieve(findFriend);
 		Set<LinkedInUser> ignore = new HashSet<>();
 		List<LinkedInUser> pathToEndUser = new ArrayList<>();
+		ignore.add(loggedInUser);
 		
 		if(createPathToEndUser(loggedInUser, endUser, pathToEndUser, ignore)) {
 			System.out.print(loggedInUser.getUsername());
@@ -69,24 +70,26 @@ public class DegreeOfSeparationAction implements MenuAction {
 			if (ignore.contains(startConnections.get(loop))){
 				continue;
 			}
+			else {
+				// - otherwise, add the connection to both the pathToEndUser list and the ignore set.
+				pathToEndUser.add(startConnections.get(loop)); 
+				ignore.add(startConnections.get(loop));
 			
-			// - otherwise, add the connection to both the pathToEndUser list and the ignore set.
-			pathToEndUser.add(startConnections.get(loop)); 
-			ignore.add(startConnections.get(loop));
-		
-			// - recursively call the createPathToEndUser method passing
-			//the connection as the startUser, the endUser, the path (established at the beginning of this loop), and the ignore Set.
-			
-			// - if the call to the createPathToEndUser method returns true, then it found a path to the end user.
-			//In that case, add the entries in the path variable to the pathToEndUser list and 
-			//break out of the loop (you're done).  pathToEndUser.addAll(path).
-			if (createPathToEndUser(startConnections.get(loop), endUser, path, ignore)) {
-				pathToEndUser.addAll(path);
-				return true;
+				// - recursively call the createPathToEndUser method passing
+				//the connection as the startUser, the endUser, the path (established at the beginning of this loop), and the ignore Set.
+				
+				// - if the call to the createPathToEndUser method returns true, then it found a path to the end user.
+				//In that case, add the entries in the path variable to the pathToEndUser list and 
+				//break out of the loop (you're done).  pathToEndUser.addAll(path).
+				if (createPathToEndUser(startConnections.get(loop), endUser, path, ignore)) {
+					pathToEndUser.addAll(path);
+					return true;
+				}
 			}
 		// - continue looping until all connections have been processed.
 		// - return true/false to indicate if a path to the end user was found.
 		}
+		
 		return false;		
 	}
 
