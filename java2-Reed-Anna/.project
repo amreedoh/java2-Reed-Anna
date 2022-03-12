@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>TestData/bom.json</name>
+			<type>1</type>
+			<location>C:/Users/amree/Downloads/bom.json/bom.json</location>
+		</link>
+	</linkedResources>
 </projectDescription>
