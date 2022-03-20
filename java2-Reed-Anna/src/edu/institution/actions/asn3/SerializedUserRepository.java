@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.institution.ApplicationHelper;
 import edu.institution.UserRepository;
 import edu.institution.asn2.LinkedInException;
 import edu.institution.asn2.LinkedInUser;
@@ -46,6 +47,7 @@ public class SerializedUserRepository implements UserRepository, Serializable {
 				throw new RuntimeException(exception);
 			}
 		}
+		ApplicationHelper.initSkillsetUsages(users);
 	}
 
 	

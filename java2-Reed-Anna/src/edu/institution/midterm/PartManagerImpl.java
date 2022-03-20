@@ -22,6 +22,14 @@ public class PartManagerImpl implements PartManager {
 
 	HashMap<String, Part> parts = new HashMap<>(); //HashMap<Value = String, Key = Part>
 	
+	public HashMap<String, Part> getParts() {
+		return parts;
+	}
+
+	public void setParts(HashMap<String, Part> parts) {
+		this.parts = parts;
+	}
+
 	@Override
 	public int importPartStore(String filePath) {
 		File bomFile = new File(filePath);
@@ -77,14 +85,15 @@ public class PartManagerImpl implements PartManager {
 					//List<BomEntry> tempBOM = largerPart.getBillOfMaterial();
 					//String tempPartNo = tempBOM.get(loop).getPartNumber();
 					//Part smallerPart = costPart(tempPartNo);
-					Part smallerPart = costPart(largerPart.getBillOfMaterial().get(loop).getPartNumber()); //finds the smallerPart and will set the smallerPart's price
-					tempPrice =+ (smallerPart.getPrice() * largerPart.getBillOfMaterial().get(loop).getQuantity()); //will calculate the price of the largerPart by adding the price of the smallerPart times quantity
+					Part smallerPart = costPart(largerPart.getBillOfMaterial().get(loop).getPartNumber()); 
+						//finds the smallerPart and will set the smallerPart's price
+					tempPrice = tempPrice+ (smallerPart.getPrice() * largerPart.getBillOfMaterial().get(loop).getQuantity()); 
+						//will calculate the price of the largerPart by adding the price of the smallerPart times quantity
 				}
 				largerPart.setPrice(tempPrice); //once all BOM entries have been gone through the tempPrice is then set as the actual price of the largerPart
-			}else {
-				largerPart.setPrice(0); //will set the price to 0 just in case there is a negative number in there for some reason
+		
 			}
-		}
+		}	
 		
 		return largerPart;
 	}
@@ -92,8 +101,8 @@ public class PartManagerImpl implements PartManager {
 	@Override
 	public Part retrievePart(String partNumber) {
 		/*
-		Return the Part instance from the part store that is related to the supplied part number. Return null if no
-		Part instance is found for the supplied part number
+		Return the Part instance from the part store that is related to the supplied part number.
+		Return null if no Part instance is found for the supplied part number
 		*/
 		if (parts.containsKey(partNumber)) {
 			return parts.get(partNumber);
@@ -150,7 +159,7 @@ public class PartManagerImpl implements PartManager {
 		
 		Collections.sort(assemble);//Should return alphabetized by Part number
 		return assemble;
-	}
+	} 
 
 	@Override
 	public List<Part> getPurchasePartsByPrice() {
@@ -164,7 +173,7 @@ public class PartManagerImpl implements PartManager {
 		while (partsIterator.hasNext()) {
 			Entry partsMap = (Map.Entry) partsIterator.next();
 			Part temp = (Part) partsMap.getValue();
-			if (temp.getPartType().equals("ASSEMBLY")) {
+			if (temp.getPartType().equals("PURCHASE")) {
 				purchase.add(temp);
 			}
 		}

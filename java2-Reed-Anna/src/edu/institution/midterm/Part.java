@@ -27,21 +27,39 @@ public class Part implements Comparable<Part> {
 		return partType;
 	}
 	
-	//must be ASSEMBLY, PURCHASE or COMPONENT
+	//Valid values are: "ASSEMBLY", "PURCHASE", or "COMPONENT"
+	// "ASSEMBLY" parts are the final assemblies that are sold to the customers.
+	// "COMPONENT" parts are the sub component parts that make up the final assemblies.
+	// "PURCHASE" parts are the external components purchased from a vendor.
+		//Purchased parts cannot have sub parts as they are bought from somewhere else as is
 	public void setPartType(String partType) {
-		this.partType = partType;
+		if ((partType.equalsIgnoreCase("ASSEMBLY")) ||(partType.equalsIgnoreCase("PURCHASE")) ||(partType.equalsIgnoreCase("COMPONENT")) ) {
+			this.partType = partType;
+		}
+		else {
+			System.out.println(this.getName() + ": Part Type must be ASSEMBLY, PURCHASE, or COMPONENT");
+		}
+		
 	}
 	public float getPrice() {
 		return price;
 	}
 	public void setPrice(float price) {
+		if (price < 0) {
+			price = 0;
+		}
 		this.price = price;
 	}
 	public List<BomEntry> getBillOfMaterial() {
 		return billOfMaterial;
 	}
 	public void setBillOfMaterial(List<BomEntry> billOfMaterial) {
-		this.billOfMaterial = billOfMaterial;
+		if (this.partType.equalsIgnoreCase("ASSEMBLY") || this.partType.equalsIgnoreCase("COMPONENT")) {
+			this.billOfMaterial = billOfMaterial;
+		}
+		else {
+			System.out.println(this.getName() + ": Purchased part cannot have a BOM");
+		}
 	}
 	
 	@Override
@@ -67,7 +85,7 @@ public class Part implements Comparable<Part> {
 		return Objects.equals(partNumber, other.partNumber);
 	}
 	
-	//i misunderstood requirements but will keep here for now
+	/*i misunderstood requirements but will keep here for now
 	public int compareByType(Part compare) { //compares by type
 		if (this.getPartType().isEmpty()) {
 			return -1;
@@ -77,7 +95,7 @@ public class Part implements Comparable<Part> {
 		}
 		
 		return this.getPartType().compareToIgnoreCase(compare.getPartType());
-	}
+	}*/
 	
 	public int compareByPrice(Part compare) { //compares by price
 		if (this.getPrice() <= 0) {
