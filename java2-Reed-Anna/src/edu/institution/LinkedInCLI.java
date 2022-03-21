@@ -17,7 +17,7 @@ import java.io.File;
 import edu.institution.actions.asn3.SerializedUserRepository;
 
 /**
- * The command line interface for LinkedIn.
+ * The command line interface for LinkedIn. 
  */
 public class LinkedInCLI {
 	private static String PATH = System.getProperty("user.home") + File.separator + "Java2" + File.separator;

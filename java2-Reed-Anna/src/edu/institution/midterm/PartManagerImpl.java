@@ -11,8 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import edu.institution.asn2.LinkedInUser;
@@ -32,29 +35,84 @@ public class PartManagerImpl implements PartManager {
 
 	@Override
 	public int importPartStore(String filePath) {
-		File bomFile = new File(filePath);
-		if(bomFile.exists()) {
-			try(FileInputStream fis = new FileInputStream(bomFile);
-					ObjectInputStream ois = new ObjectInputStream (fis)){
-						String jsonData = (String) ois.readObject();
-						Gson gson = new Gson();
-						Part[] tempParts = gson.fromJson(jsonData, Part[].class);
-						for (int loop = 0; loop < tempParts.length; loop++) {
-							parts.put(tempParts[loop].getPartNumber(), tempParts[loop]);
-						}
-						return parts.size();
-			} catch (Exception exception) {
-				throw new RuntimeException(exception);
+		
+		/*
+		JsonParser jsonP = new JsonParser();
+		FileReader read = new FileReader(".\\TestData\\bom.json");
+		//JsonObject BOMjson = (JsonObject) jsonP.parse(read);
+		
+		String partNumber;
+		Part tempPart = new Part();
+		List<BomEntry> tempBOMA = new ArrayList<>();
+		while ((partNumber = (String) BOMjson.get("partNumber")) != null) {
+			tempPart.setPartNumber(partNumber);
+			tempPart.setName((String) BOMjson.get("name"));
+			tempPart.setPartType(((String) BOMjson.get("partType")));
+			if (((float) BOMjson.get("price")) == null) {
+				tempPart.setPrice(0);
 			}
-		}else {
-			//makes sure path exists
-			new File(filePath).mkdirs();
-			File file = new File(filePath);
-			try {
-				file.createNewFile();
-			} catch (Exception exception) {
-				throw new RuntimeException(exception);
+			else {
+				tempPart.setPrice(((float) BOMjson.get("price")));
 			}
+			JsonArray jsonA = (JsonArray)BOMjson.get("billOfMaterial");
+			for (int loop = 1; loop < jsonA.size(); loop++) {
+				BomEntry tempBOM = new BomEntry();
+				tempBOM.setPartNumber((String) BOMjson.get("partNumber"));
+				tempBOM.setPartNumber((int) BOMjson.get("quantity"));
+				tempBOMA.add(tempBOM);
+
+			}
+		}
+		*/
+
+		File file = new File(".\\TestData\\bom.json");
+		if (!file.exists()) {
+			System.out.println("File not found");
+			return -1;
+		}
+		
+		Scanner scanner = null;
+		scanner = new Scanner(file);
+		
+		
+		while (scanner.hasNext()) {	
+			StringBuilder lines;
+			lines.append(scanner.nextLine()));
+
+			Part tempPart = new Part();
+			List<BomEntry> tempBOMA = new ArrayList<>();
+			
+			if (lines.substring(2, 16).equals("\"partNumber\": \"")) {
+				tempPart.setPartNumber(lines.substring(17, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 10).equals("\"name\": \"")) {
+				tempPart.setName(lines.substring(11, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 14).equals("\"partType\": \"")) {
+				tempPart.setPartType(lines.substring(15, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 8).equals("\"price\": ")) {
+				tempPart.setPrice((float)lines.substring(10)); //cast to float
+				continue;
+			}else if (lines.substring(2, 19).equals("\"billOfMaterial\": [")) {
+				scanner.nextLine();
+				BomEntry tempBOM = new BomEntry();
+				
+				while(scanner.hasNext()) {
+					if (lines.substring(4, 18).equals("\"partNumber\": \"")) {
+						tempBOM.setPartNumber(lines.substring(17, (lines.length()-2)));
+						
+					}else if (lines.substring(4, 14).equals("\"quantity\": ")) {
+						tempBOM.setQuantity((int)lines.substring(16)); //cast to int
+						tempBOMA.add(tempBOM);
+						
+					}else if (lines.charAt(2) == ']'){ //is this the right way to do it?
+						break; //reached the end of the BOM array
+					}
+				}
+				tempPart.setBillOfMaterial(tempBOMA);
+			}
+			scanner.nextLine();
 		}
 
 	return 0;

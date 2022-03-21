@@ -54,7 +54,7 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 	
 	public void addSkillset(String skillset) {
 		skillsets.add(skillset);
-	}
+	} 
 	
 	public void removeSkillset (String skillset) {
 		skillsets.remove(skillset);

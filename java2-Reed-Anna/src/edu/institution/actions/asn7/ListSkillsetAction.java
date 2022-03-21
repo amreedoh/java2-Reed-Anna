@@ -25,10 +25,11 @@ public class ListSkillsetAction implements MenuAction {
 		
 		Collections.sort(orderSkills);
 		//System.out.println(orderSkills);
-		
+		int count = 0;
 		System.out.println("Here are your skill sets:");
 		for (int loop = 0; loop < orderSkills.size(); loop++) {
-			System.out.println(orderSkills.get(loop) + " has " + ApplicationHelper.retrieveSkillsetCount(orderSkills.get(loop)) + " other users.");
+			count = ApplicationHelper.retrieveSkillsetCount(orderSkills.get(loop));
+			System.out.println(orderSkills.get(loop) + " has " + count + " user(s)");
 		}
 		
 		

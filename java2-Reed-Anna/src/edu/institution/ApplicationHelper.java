@@ -48,19 +48,24 @@ public class ApplicationHelper {
 	* @param skillset the skillset to increment.
 	*/
 	public static void incrementSkillsetCount(String skillset) {
+		System.out.println(usersPerSkill.get(skillset));
+		
 		try {
-			if (usersPerSkill.containsKey(skillset)) {
-				usersPerSkill.replace(skillset, (usersPerSkill.get(skillset) + 1));
+			if (!usersPerSkill.isEmpty()) {
+				if (usersPerSkill.containsKey(skillset)) {
+					usersPerSkill.replace(skillset, (usersPerSkill.get(skillset) + 1));
+				}
 			}
 			else {
 				usersPerSkill.put(skillset, 1);
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}			
-	}
+		}	
+		
+		System.out.println(skillset + " " + usersPerSkill.get(skillset));
+	} 
 	
 	/**
 	* Decrements the number of users associated with the supplied skillset.
@@ -70,15 +75,19 @@ public class ApplicationHelper {
 	* @param skillset the skillset to decrement.
 	*/
 	public static void decrementSkillsetCount(String skillset) {
+		System.out.println(skillset + " " + usersPerSkill.get(skillset));
+		
 		try {
 			if (usersPerSkill.containsKey(skillset)) {
 				usersPerSkill.replace(skillset, (usersPerSkill.get(skillset) - 1));
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}	
+		
+		System.out.println(skillset + " " + usersPerSkill.get(skillset));
 	}
 	
 	/**
@@ -88,7 +97,7 @@ public class ApplicationHelper {
 	* @param skillset the skillset to lookup.
 	*/
 	public static int retrieveSkillsetCount(String skillset) {
-		if (usersPerSkill.get(skillset) == 0) {
+		if (!usersPerSkill.containsKey(skillset)) {
 			return -1; 
 		}
 		return usersPerSkill.get(skillset);
@@ -101,9 +110,11 @@ public class ApplicationHelper {
 	* @param users the list of users.
 	*/
 	public static void initSkillsetUsages(List<LinkedInUser> users) {
-		for (int loop = 0; loop > users.size(); loop++) {
+		
+		for (int loop = 0; loop < users.size(); loop++) {
 			Iterator<String> tempSkills = users.get(loop).getSkillsets().iterator();
 			while(tempSkills.hasNext()) {
+				
 				incrementSkillsetCount(tempSkills.next());
 			}
 		}

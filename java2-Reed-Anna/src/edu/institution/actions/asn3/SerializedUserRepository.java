@@ -47,6 +47,7 @@ public class SerializedUserRepository implements UserRepository, Serializable {
 				throw new RuntimeException(exception);
 			}
 		}
+
 		ApplicationHelper.initSkillsetUsages(users);
 	}
 
@@ -73,7 +74,7 @@ public class SerializedUserRepository implements UserRepository, Serializable {
 	}
 
 	@Override //working
-	public void saveAll() {
+	public void saveAll() { 
 		//should either create a new file or delete existing file and save what you have, easier than an update
 		File file = new File(filePath + fileName);
 		if(file.exists()) {

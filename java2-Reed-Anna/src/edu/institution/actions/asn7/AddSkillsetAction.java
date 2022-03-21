@@ -13,7 +13,7 @@ public class AddSkillsetAction implements MenuAction {
 	public boolean process(Scanner scanner, UserRepository userRepository, LinkedInUser loggedInUser) {
 		
 		System.out.println("What skill would you like to add?");
-		String newSkill = scanner.nextLine();
+		String newSkill = scanner.nextLine(); 
 		
 		loggedInUser.addSkillset(newSkill);
 		ApplicationHelper.incrementSkillsetCount(newSkill);

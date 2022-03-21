@@ -17,7 +17,7 @@ public class ListUserAction implements MenuAction {
 		for (int i =0; i < users.size(); i++) {
 			System.out.println(users.get(i).getUsername());
 		}
-		return true; //keeps user logged in 
+		return true; //keeps user logged in  
 	}
 
 }
