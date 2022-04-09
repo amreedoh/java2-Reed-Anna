@@ -2,6 +2,7 @@ package edu.institution.midterm;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -15,8 +16,12 @@ import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+
 
 import edu.institution.asn2.LinkedInUser;
 
@@ -35,49 +40,37 @@ public class PartManagerImpl implements PartManager {
 
 	@Override
 	public int importPartStore(String filePath) {
-		
-		/*
-		JsonParser jsonP = new JsonParser();
-		FileReader read = new FileReader(".\\TestData\\bom.json");
-		//JsonObject BOMjson = (JsonObject) jsonP.parse(read);
-		
-		String partNumber;
-		Part tempPart = new Part();
-		List<BomEntry> tempBOMA = new ArrayList<>();
-		while ((partNumber = (String) BOMjson.get("partNumber")) != null) {
-			tempPart.setPartNumber(partNumber);
-			tempPart.setName((String) BOMjson.get("name"));
-			tempPart.setPartType(((String) BOMjson.get("partType")));
-			if (((float) BOMjson.get("price")) == null) {
-				tempPart.setPrice(0);
-			}
-			else {
-				tempPart.setPrice(((float) BOMjson.get("price")));
-			}
-			JsonArray jsonA = (JsonArray)BOMjson.get("billOfMaterial");
-			for (int loop = 1; loop < jsonA.size(); loop++) {
-				BomEntry tempBOM = new BomEntry();
-				tempBOM.setPartNumber((String) BOMjson.get("partNumber"));
-				tempBOM.setPartNumber((int) BOMjson.get("quantity"));
-				tempBOMA.add(tempBOM);
 
-			}
-		}
-		*/
-
-		File file = new File(".\\TestData\\bom.json");
+		JsonElement tempJSON;
+		
+		File file = new File(filePath);
 		if (!file.exists()) {
 			System.out.println("File not found");
 			return -1;
 		}
 		
 		Scanner scanner = null;
-		scanner = new Scanner(file);
+		try {
+			scanner = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		StringBuilder lines = new StringBuilder();
 		
 		while (scanner.hasNext()) {	
-			StringBuilder lines;
-			lines.append(scanner.nextLine()));
+
+			lines.append(scanner.nextLine());
+			lines.append("\n");
+		}
+		JsonParser JSON = new JsonParser();
+		
+		String contentsOfFile = lines.toString();
+		tempJSON = JSON.parse(contentsOfFile) ;
+		
+		tempJSON.
+		/*
 
 			Part tempPart = new Part();
 			List<BomEntry> tempBOMA = new ArrayList<>();
@@ -114,6 +107,7 @@ public class PartManagerImpl implements PartManager {
 			}
 			scanner.nextLine();
 		}
+		*/
 
 	return 0;
 	}

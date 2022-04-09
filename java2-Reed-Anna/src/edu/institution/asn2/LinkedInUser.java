@@ -10,8 +10,9 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 	private static final long serialVersionUID = 4498439148211156781L;
 	private List<LinkedInUser> connections = new ArrayList<>();
 	private Set<String> skillsets = new HashSet<String>();
+
 	 
-	//Constructors for LinkedInUser
+	//Constructors for LinkedInUser 
 	public LinkedInUser () {
 		super(); //super calls back to the base class
 	}
@@ -23,7 +24,7 @@ public class LinkedInUser extends UserAccount implements Comparable<LinkedInUser
 	} 
 	
 	
-	//methods 
+	//methods  
 	public void addConnection(LinkedInUser user) throws LinkedInException {
 		
 		if (connections.contains(user)) {

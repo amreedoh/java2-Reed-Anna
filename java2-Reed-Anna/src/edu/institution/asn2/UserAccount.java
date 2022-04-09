@@ -12,7 +12,7 @@ public abstract class UserAccount implements Serializable {
 	public UserAccount () {
 		setUsername(null);
 		setPassword(null);
-		setType(null); 
+		setType(null);  
 	}
 	
 	public UserAccount (String username, String password) {

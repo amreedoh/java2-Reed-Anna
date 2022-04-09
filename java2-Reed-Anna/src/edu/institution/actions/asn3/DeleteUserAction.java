@@ -24,7 +24,7 @@ public class DeleteUserAction implements MenuAction {
 				if (deleteUser.equalsIgnoreCase(loggedInUser.getUsername())) {
 					return false;//will log off user if the logged in user deletes thier account
 				}
-			}
+			} 
 			else {
 				System.out.println("Passwords do not match.");
 			}

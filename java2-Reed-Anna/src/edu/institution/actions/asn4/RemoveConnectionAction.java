@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import edu.institution.UserRepository;
 import edu.institution.actions.MenuAction;
+import edu.institution.actions.asn10.UndoAction;
+import edu.institution.actions.asn10.UndoAction.MostRecentAction;
 import edu.institution.asn2.LinkedInException;
 import edu.institution.asn2.LinkedInUser;
 
@@ -18,9 +20,11 @@ public class RemoveConnectionAction implements MenuAction {
 		//if user does not exist display "There is no user with that user name."
 		if(userRepository.retrieve(badFriend) == null) {
 			System.out.println("There is no user with that user name.");
-			return true;
+			return true; 
 		}
 		
+		UndoAction.history.push(userRepository.retrieve(badFriend));
+		UndoAction.history.push(MostRecentAction.DELETECON);
 		try {
 			loggedInUser.removeConnection(userRepository.retrieve(badFriend));
 		}catch(LinkedInException e){

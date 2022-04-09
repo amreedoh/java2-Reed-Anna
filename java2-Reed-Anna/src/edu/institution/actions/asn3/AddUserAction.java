@@ -14,7 +14,7 @@ public class AddUserAction implements MenuAction {
 		
 		System.out.print("Enter Username: ");
 		String userName = scanner.nextLine();
-		
+		 
 		System.out.print("Enter Pasword: ");
 		String userPass = scanner.nextLine();
 		
@@ -23,7 +23,7 @@ public class AddUserAction implements MenuAction {
 		
 		LinkedInUser newUser = new LinkedInUser(userName, userPass, userType);
 		
-		try {
+		try { 
 			//if(true) {throw new LinkedInException("last resort");}
 			userRepository.add(newUser);
 			
