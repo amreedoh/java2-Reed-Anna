@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import edu.institution.UserRepository;
 import edu.institution.actions.MenuAction;
+import edu.institution.actions.asn10.LinkedInAction;
 import edu.institution.actions.asn10.UndoAction;
 import edu.institution.actions.asn10.UndoAction.MostRecentAction;
 import edu.institution.asn2.LinkedInException;
@@ -36,8 +37,7 @@ public class RemoveConnectionAction implements MenuAction {
 		// then in the UndoAction, you would pop the stack, which would return the LinkedInAction class. You could then
 		// call the getter methods to get the data needed to undo the action.
 		
-		UndoAction.history.push(userRepository.retrieve(badFriend));
-		UndoAction.history.push(MostRecentAction.DELETECON);
+		UndoAction.history.push(new LinkedInAction(MostRecentAction.DELETECON, userRepository.retrieve(badFriend)));
 		try {
 			loggedInUser.removeConnection(userRepository.retrieve(badFriend));
 		}catch(LinkedInException e){

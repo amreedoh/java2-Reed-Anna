@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import edu.institution.UserRepository;
 import edu.institution.actions.MenuAction;
+import edu.institution.actions.asn10.LinkedInAction;
 import edu.institution.actions.asn10.UndoAction;
 import edu.institution.actions.asn10.UndoAction.MostRecentAction;
 import edu.institution.asn2.LinkedInException;
@@ -22,8 +23,7 @@ public class AddConnectionAction implements MenuAction {
 			return true;
 		} 
 		
-		UndoAction.history.push(userRepository.retrieve(newFriend));
-		UndoAction.history.push(MostRecentAction.ADDCON);
+		UndoAction.history.push(new LinkedInAction(MostRecentAction.ADDCON, userRepository.retrieve(newFriend)));
 		//if the user is already in the logged in user's connection list then catch the LinkedInException that was thrown in the second assignment and display the message within the exception
 		//if the user does exist, add the user to the logged in user's connection list and display "The connection was added successfully"
 		try {

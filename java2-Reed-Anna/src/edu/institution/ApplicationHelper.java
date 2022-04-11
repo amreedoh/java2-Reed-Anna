@@ -64,7 +64,7 @@ public class ApplicationHelper {
 			e.printStackTrace();
 		}	
 		
-		System.out.println(skillset + " " + usersPerSkill.get(skillset));
+		//System.out.println(skillset + " " + usersPerSkill.get(skillset));
 	} 
 	
 	/**

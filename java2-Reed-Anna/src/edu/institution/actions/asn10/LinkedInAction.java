@@ -3,6 +3,7 @@ package edu.institution.actions.asn10;
 import java.util.Objects;
 
 import edu.institution.actions.asn10.UndoAction.MostRecentAction;
+import edu.institution.asn2.LinkedInUser;
 
 public class LinkedInAction {
 	// TODO Anna, consider creating a new class to hold the undo-able data and place that class in your stack.
@@ -18,12 +19,12 @@ public class LinkedInAction {
 			// then in the UndoAction, you would pop the stack, which would return the LinkedInAction class. You could then
 			// call the getter methods to get the data needed to undo the action.
 	private MostRecentAction action;
-	private Object data;
+	private LinkedInUser user;
 	
-	public LinkedInAction(MostRecentAction action, Object data) {
+	public LinkedInAction(MostRecentAction action, LinkedInUser user) {
 		super();
 		this.action = action;
-		this.data = data;
+		this.user = user;
 	}
 	public MostRecentAction getAction() {
 		return action;
@@ -31,15 +32,15 @@ public class LinkedInAction {
 	public void setAction(MostRecentAction action) {
 		this.action = action;
 	}
-	public Object getData() {
-		return data;
+	public LinkedInUser getUser() {
+		return user;
 	}
-	public void setData(Object data) {
-		this.data = data;
+	public void setUser(LinkedInUser user) {
+		this.user = user;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(action, data);
+		return Objects.hash(action, user);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -50,11 +51,11 @@ public class LinkedInAction {
 		if (getClass() != obj.getClass())
 			return false;
 		LinkedInAction other = (LinkedInAction) obj;
-		return action == other.action && Objects.equals(data, other.data);
+		return action == other.action && Objects.equals(user, other.user);
 	}
 	@Override
 	public String toString() {
-		return "LinkedInAction [action=" + action + ", data=" + data + "]";
+		return "LinkedInAction [action=" + action + ", user=" + user + "]";
 	}
 	
 	

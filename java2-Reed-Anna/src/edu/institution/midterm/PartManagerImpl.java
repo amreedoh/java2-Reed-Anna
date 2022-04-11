@@ -73,10 +73,13 @@ public class PartManagerImpl implements PartManager {
 		
 		// TODO Now...all you need to do is loop through your Parts array and add each instance to your parts map. The key to 
 		//   the map is the part number and the value is the Part instance.
+		for(Part part: parts) {
+			this.parts.put(part.getPartNumber(), part);
+		}
 		// TODO Afterwards, return the size of the parts map.
 
 
-	return 0;
+	return this.parts.size();
 	}
 
 	@Override

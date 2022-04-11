@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import edu.institution.UserRepository;
 import edu.institution.actions.MenuAction;
+import edu.institution.actions.asn10.LinkedInAction;
+import edu.institution.actions.asn10.UndoAction;
+import edu.institution.actions.asn10.UndoAction.MostRecentAction;
 import edu.institution.asn2.LinkedInException;
 import edu.institution.asn2.LinkedInUser;
 
@@ -22,6 +25,8 @@ public class AddUserAction implements MenuAction {
 		String userType = scanner.nextLine();
 		
 		LinkedInUser newUser = new LinkedInUser(userName, userPass, userType);
+		
+		UndoAction.history.push(new LinkedInAction(MostRecentAction.ADDUSER, newUser));
 		
 		try { 
 			//if(true) {throw new LinkedInException("last resort");}

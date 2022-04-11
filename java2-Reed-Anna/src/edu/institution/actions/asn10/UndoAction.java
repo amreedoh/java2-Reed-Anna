@@ -14,67 +14,98 @@ public class UndoAction implements MenuAction {
 
 	//linkedInUser than most recent action enum
 	public static Stack<LinkedInAction> history = new Stack<>();
-	public enum MostRecentAction {	ADDCON, 
-									DELETECON, 
-									ADDSKILL, 
-									DELETESKILL, 
-									ADDUSER,
-									DELETEUSER};
+	public enum MostRecentAction {	ADDCON("Add Connection"), 
+									DELETECON("Delete Conection"), 
+									ADDSKILL("Add Skill"), 
+									DELETESKILL("Delete Skill"), 
+									ADDUSER("Add New User"),
+									DELETEUSER("Delete User");
+
+									private String displayName;
+
+									MostRecentAction(String displayName) {
+										this.displayName = displayName;
+									}
+									
+									public String display() {
+										return this.displayName;
+									}
+	};
 
 	@Override
 	public boolean process(Scanner scanner, UserRepository userRepository, LinkedInUser loggedInUser) {
 		
-		switch (history.peek().getAction()) {
-			case DELETECON://add a connection back
-				try {
-					loggedInUser.addConnection((LinkedInUser) history.pop().getData());
-				} catch (LinkedInException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            break;
-			case ADDCON: //remove a new connection
-				try {
-					loggedInUser.removeConnection(((LinkedInUser) history.pop().getData()));;
-				} catch (LinkedInException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            break; 
-			case ADDSKILL: //remove a new skill
-				LinkedInUser tempA = ((LinkedInUser) history.pop().getData());
-				Iterator<String> itrA = loggedInUser.getSkillsets().iterator();
-				while (itrA.hasNext()) {
-					if (!tempA.getSkillsets().contains(itrA.toString())){
-						loggedInUser.removeSkillset(itrA.toString());
-						ApplicationHelper.decrementSkillsetCount(itrA.toString());
-					}
-				}
-	            break; 
-			case DELETESKILL://add a skill back
-				LinkedInUser tempD = ((LinkedInUser) history.pop().getData());
-				Iterator<String> itrD = tempD.getSkillsets().iterator();
-				while (itrD.hasNext()) {
-					if (!loggedInUser.getSkillsets().contains(itrD.toString())){
-						loggedInUser.addSkillset(itrD.toString());
-						ApplicationHelper.incrementSkillsetCount(itrD.toString());
-					}
-				}
-	            break;
-			case ADDUSER: //remove a new user
-				try {
-					userRepository.add((LinkedInUser) history.pop().getData());
-				} catch (LinkedInException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-	            break;
-			case DELETEUSER: //add a user back
-				userRepository.delete((LinkedInUser) history.pop().getData());
-	            break;
+		LinkedInUser temp = new LinkedInUser();
+		String tempName;
+		if(history.peek().getClass().equals(loggedInUser)) {
+			tempName = temp.getUsername();
 		
+		System.out.println("Do you wish to undo the " + history.peek().getAction().display() + " action?");
+		System.out.println("This action involves " + temp.getUsername() + " action?");
+		String answer = scanner.nextLine();
+		
+		
+		if (answer.equalsIgnoreCase("y")) {
+			switch (history.peek().getAction()) {
+				case DELETECON://add a connection back
+					try {
+						loggedInUser.addConnection(history.pop().getUser());
+						System.out.println("Undo Complete");
+					} catch (LinkedInException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            break;
+				case ADDCON: //remove a new connection
+					try {
+						loggedInUser.removeConnection(history.pop().getUser());
+						System.out.println("Undo Complete");
+					} catch (LinkedInException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            break; 
+				case ADDSKILL: //remove a new skill
+					LinkedInUser tempA = (history.pop().getUser());
+					Iterator<String> itrA = loggedInUser.getSkillsets().iterator();
+					while (itrA.hasNext()) {
+						if (!tempA.getSkillsets().contains(itrA.toString())){
+							loggedInUser.removeSkillset(itrA.toString());
+							ApplicationHelper.decrementSkillsetCount(itrA.toString());
+							System.out.println("Undo Complete");
+							break;
+						}
+					}
+		            break; 
+				case DELETESKILL://add a skill back
+					LinkedInUser tempD = (history.pop().getUser());
+					Iterator<String> itrD = tempD.getSkillsets().iterator();
+					while (itrD.hasNext()) {
+						if (!loggedInUser.getSkillsets().contains(itrD.toString())){
+							loggedInUser.addSkillset(itrD.toString());
+							ApplicationHelper.incrementSkillsetCount(itrD.toString());
+							System.out.println("Undo Complete");
+							break;
+						}
+					}
+		            break;
+				case ADDUSER: //remove a new user
+					try {
+						userRepository.add(history.pop().getUser());
+						System.out.println("Undo Complete");
+					} catch (LinkedInException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					};
+		            break;
+				case DELETEUSER: //add a user back
+					userRepository.delete(history.pop().getUser());
+					System.out.println("Undo Complete");
+		            break;
+			
+				}
+			}
 		}
-
-		return false;
+		return true;
 	}
-
 }

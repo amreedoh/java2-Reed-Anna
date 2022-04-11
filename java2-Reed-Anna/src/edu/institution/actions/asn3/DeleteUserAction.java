@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import edu.institution.UserRepository;
 import edu.institution.actions.MenuAction;
+import edu.institution.actions.asn10.LinkedInAction;
+import edu.institution.actions.asn10.UndoAction;
+import edu.institution.actions.asn10.UndoAction.MostRecentAction;
 import edu.institution.asn2.LinkedInUser;
 
 public class DeleteUserAction implements MenuAction {
@@ -14,12 +17,15 @@ public class DeleteUserAction implements MenuAction {
 		System.out.print("User name to delete: ");
 		String deleteUser = scanner.nextLine();
 		
+		
+		
 		if (userRepository.retrieve(deleteUser) != null) {//checks if user is in repo
 			//System.out.println(userRepository.retrieve(deleteUser).getPassword());
 			System.out.print("Password: ");
 			String deletePass = scanner.nextLine();
 			
 			if(userRepository.retrieve(deleteUser).isPasswordCorrect(deletePass)) {
+				UndoAction.history.push(new LinkedInAction(MostRecentAction.DELETEUSER, userRepository.retrieve(deleteUser)));
 				userRepository.delete(userRepository.retrieve(deleteUser)); //will delete user
 				if (deleteUser.equalsIgnoreCase(loggedInUser.getUsername())) {
 					return false;//will log off user if the logged in user deletes thier account

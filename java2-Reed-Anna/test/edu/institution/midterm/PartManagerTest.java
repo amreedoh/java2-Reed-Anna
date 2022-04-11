@@ -1,9 +1,11 @@
 package edu.institution.midterm;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.institution.midterm.PartManagerImpl;
@@ -11,6 +13,8 @@ import edu.institution.midterm.PartManager;
 
 public class PartManagerTest {
 
+	private static final String PATH = System.getProperty("user.home") + File.separator + "Java2" + File.separator;
+	private static final String FILE_NAME = "bom.json";
 	/*@Test
 	public void UploadFileTest() {
 		
@@ -23,6 +27,20 @@ public class PartManagerTest {
 		//All file paths have been coppied and pasted and I have tried adding extra "/" and switching to "\" just in case
 	}
 	*/
+	
+	// TODO Anna, I added this unit test for you. It imports your parts and assert that the number of parts imported was 79.
+		//   It expects you to place your bom.json file the Java2 folder off of your home directly (the same location as the 
+		//   LinkedInUsers.dat file).
+		@Test
+		public void testImportPartStore() {
+			PartManager sut = new PartManagerImpl();
+			try {
+				int count = sut.importPartStore(PATH + FILE_NAME);
+				Assert.assertEquals(79, count);
+			} catch (Throwable exception) {
+				Assert.fail(exception.getMessage());
+			}
+		}
 	
 	
 	
