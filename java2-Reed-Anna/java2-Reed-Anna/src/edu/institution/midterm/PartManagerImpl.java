@@ -67,14 +67,58 @@ public class PartManagerImpl implements PartManager {
 		// TODO Anna, you're close here. Since the lines StringBuilder already is a String-representation of the JSON data
 		//  which was read from the supplied file, all that need to do is convert the StringBuilder to a String and pass that
 		//  to the gson.fromJson method.
-		//myJsonString = gson.toJson(lines);
+//		myJsonString = gson.toJson(lines);
 		String myJsonString = lines.toString();
 		Part[] parts = gson.fromJson(myJsonString,  Part[].class);
 		
 		// TODO Now...all you need to do is loop through your Parts array and add each instance to your parts map. The key to 
 		//   the map is the part number and the value is the Part instance.
 		// TODO Afterwards, return the size of the parts map.
+		
+		/*JsonParser JSON = new JsonParser();
+		
+		String contentsOfFile = lines.toString();
+		tempJSON = JSON.parse(contentsOfFile) ;
+		
+		tempJSON
+		/*
 
+			Part tempPart = new Part();
+			List<BomEntry> tempBOMA = new ArrayList<>();
+			
+			if (lines.substring(2, 16).equals("\"partNumber\": \"")) {
+				tempPart.setPartNumber(lines.substring(17, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 10).equals("\"name\": \"")) {
+				tempPart.setName(lines.substring(11, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 14).equals("\"partType\": \"")) {
+				tempPart.setPartType(lines.substring(15, (lines.length()-2)));
+				
+			}else if (lines.substring(2, 8).equals("\"price\": ")) {
+				tempPart.setPrice((float)lines.substring(10)); //cast to float
+				continue;
+			}else if (lines.substring(2, 19).equals("\"billOfMaterial\": [")) {
+				scanner.nextLine();
+				BomEntry tempBOM = new BomEntry();
+				
+				while(scanner.hasNext()) {
+					if (lines.substring(4, 18).equals("\"partNumber\": \"")) {
+						tempBOM.setPartNumber(lines.substring(17, (lines.length()-2)));
+						
+					}else if (lines.substring(4, 14).equals("\"quantity\": ")) {
+						tempBOM.setQuantity((int)lines.substring(16)); //cast to int
+						tempBOMA.add(tempBOM);
+						
+					}else if (lines.charAt(2) == ']'){ //is this the right way to do it?
+						break; //reached the end of the BOM array
+					}
+				}
+				tempPart.setBillOfMaterial(tempBOMA);
+			}
+			scanner.nextLine();
+		}
+		*/
 
 	return 0;
 	}
@@ -134,7 +178,7 @@ public class PartManagerImpl implements PartManager {
 	@Override
 	public List<Part> getFinalAssemblies() {
 		/*Scan all parts imported in the part store and return only the final assembly parts. Final assembly parts have a
-		part type of “ASSEMBLY”. The returned list of final assembly parts should be sorted in ascending order by
+		part type of ï¿½ASSEMBLYï¿½. The returned list of final assembly parts should be sorted in ascending order by
 		their part number.
 		
 		https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
@@ -183,7 +227,7 @@ public class PartManagerImpl implements PartManager {
 	@Override
 	public List<Part> getPurchasePartsByPrice() {
 		/*Scan all parts imported in the part store and return only the purchased parts. Purchased parts have a part
-			type of “PURCHASE”. The returned list of purchased parts should be sorted in descending order by their price
+			type of ï¿½PURCHASEï¿½. The returned list of purchased parts should be sorted in descending order by their price
 			(highest price to lowest price).
 		 */
 		List<Part> purchase = new ArrayList<>();

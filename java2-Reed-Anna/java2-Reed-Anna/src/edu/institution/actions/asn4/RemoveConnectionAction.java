@@ -16,7 +16,7 @@ public class RemoveConnectionAction implements MenuAction {
 		//prompt user for user to remove
 		System.out.print("User to remove: ");
 		String badFriend = scanner.nextLine();
-
+		
 		//if user does not exist display "There is no user with that user name."
 		if(userRepository.retrieve(badFriend) == null) {
 			System.out.println("There is no user with that user name.");
@@ -34,7 +34,7 @@ public class RemoveConnectionAction implements MenuAction {
 		// UndoAction.history.push(new LinkedInAction(userRepository.retrieve(badFriend), MostRecentAction.DELETECON);
 		// ...
 		// then in the UndoAction, you would pop the stack, which would return the LinkedInAction class. You could then
-		// call the getter methods to get the data needed to undo the action.
+		//  call the getter methods to get the data needed to undo the action.
 		
 		UndoAction.history.push(userRepository.retrieve(badFriend));
 		UndoAction.history.push(MostRecentAction.DELETECON);

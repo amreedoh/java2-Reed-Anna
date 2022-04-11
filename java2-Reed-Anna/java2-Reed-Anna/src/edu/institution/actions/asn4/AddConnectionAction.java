@@ -20,7 +20,7 @@ public class AddConnectionAction implements MenuAction {
 		if(userRepository.retrieve(newFriend) == null) {
 			System.out.println("There is no user with that user name.");
 			return true;
-		} 
+		}
 		
 		UndoAction.history.push(userRepository.retrieve(newFriend));
 		UndoAction.history.push(MostRecentAction.ADDCON);
