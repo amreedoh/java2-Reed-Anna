@@ -49,6 +49,7 @@ public class PartManagerTest {
 	
 	
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void newParts() {
 		
@@ -71,6 +72,7 @@ public class PartManagerTest {
 		D.setName("Part D");
 		D.setPartNumber("p0002");
 		D.setPartType("COMPONENT");
+		D.setPrice((float) -1);//covereage test
 		D.setPrice((float) 1);
 		partList.put(D.getPartNumber(), D);
 		BomEntry dBOMEntry = new BomEntry();
@@ -103,11 +105,15 @@ public class PartManagerTest {
 		aBOM.add(bBOMEntry);
 		aBOM.add(bBOMEntry); //repeat test
 		
+		List<BomEntry> yBOM = new ArrayList<>();
+		yBOM.add(cBOMEntry);
+		
 		Part A = new Part();
 		A.setName("Part A");
 		A.setPartNumber("a0001");
 		A.setPartType("ASSEMBLY");
 		A.setBillOfMaterial(aBOM);
+		B.setBillOfMaterial(aBOM);//coverage test
 		partList.put(A.getPartNumber(), A);
 		partList.put(A.getPartNumber(), A); //Repeat test
 		
@@ -118,29 +124,83 @@ public class PartManagerTest {
 		Part X = new Part();
 		X.setName("Part X");
 		X.setPartNumber("a0002");
+		X.setPartType("HELLO");//test for coverage
 		X.setPartType("ASSEMBLY");
 		X.setBillOfMaterial(xBOM);  
 		partList.put(X.getPartNumber(), X);
 		
+		List<BomEntry> zBOM = new ArrayList<>();
+		BomEntry aBOMEntry = new BomEntry();
+		aBOMEntry.setPartNumber(A.getPartNumber());
+		aBOMEntry.setQuantity(4);
+		BomEntry xBOMEntry = new BomEntry();
+		xBOMEntry.setPartNumber(X.getPartNumber());
+		xBOMEntry.setQuantity(4);
+		
+		Part Z = new Part();
+		Z.setName("Part Z");
+		Z.setPartNumber("a0003");
+		Z.setPartType("ASSEMBLY");
+		Z.setBillOfMaterial(zBOM);
+		partList.put(Z.getPartNumber(), Z);
+		
+		Part Y = new Part();
+		Y.setName("Part Y");
+		Y.setPartNumber("a0004");
+		Y.setPartType("ASSEMBLY");
+		Y.setBillOfMaterial(zBOM);
+		partList.put(Y.getPartNumber(), Y);
+		
 		PartManagerImpl PMI = new PartManagerImpl();
 		PMI.setParts(partList);
 
-		System.out.println(PMI.getFinalAssemblies());
-		System.out.println(PMI.getPurchasePartsByPrice());
+		//System.out.println(PMI.getFinalAssemblies());
+		//System.out.println(PMI.getPurchasePartsByPrice());
 		
-		System.out.println(PMI.retrievePart(A.getPartNumber()));
-		System.out.println(PMI.retrievePart(B.getPartNumber()));
-		System.out.println(PMI.retrievePart(C.getPartNumber()));
-		System.out.println(PMI.retrievePart(D.getPartNumber()));
-		System.out.println(PMI.retrievePart(E.getPartNumber())); 
-		System.out.println(PMI.retrievePart(X.getPartNumber()));
-		System.out.println(PMI.retrievePart("nope")); //test null
+		//System.out.println(PMI.retrievePart(A.getPartNumber()));
+		Assert.assertEquals("a0001", PMI.retrievePart(A.getPartNumber()).getPartNumber());
+		Assert.assertEquals(0.0, PMI.retrievePart(A.getPartNumber()).getPrice(), 0.001);
+		Assert.assertEquals("ASSEMBLY", PMI.retrievePart(A.getPartNumber()).getPartType());
+		
+		//System.out.println(PMI.retrievePart(B.getPartNumber()));
+		Assert.assertEquals("p0004", PMI.retrievePart(B.getPartNumber()).getPartNumber());
+		double BPrice = PMI.retrievePart(B.getPartNumber()).getPrice();
+		Assert.assertEquals(9.0, BPrice, 0.001);
+		Assert.assertEquals("PURCHASE", PMI.retrievePart(B.getPartNumber()).getPartType());
+		
+		//System.out.println(PMI.retrievePart(C.getPartNumber()));
+		Assert.assertEquals("c0001", PMI.retrievePart(C.getPartNumber()).getPartNumber());
+		Assert.assertEquals(0.0, PMI.retrievePart(C.getPartNumber()).getPrice(), 0.001);
+		Assert.assertEquals("COMPONENT", PMI.retrievePart(C.getPartNumber()).getPartType());
+		
+		//System.out.println(PMI.retrievePart(D.getPartNumber()));
+		//System.out.println(PMI.retrievePart(E.getPartNumber())); 
+		//System.out.println(PMI.retrievePart(X.getPartNumber()));
+
+		
 		
 		PMI.costPart(A.getPartNumber());
+		Assert.assertEquals(58.0, PMI.retrievePart(A.getPartNumber()).getPrice(), 0.001);
 		PMI.costPart(X.getPartNumber());
+		Assert.assertEquals(17.0, PMI.retrievePart(X.getPartNumber()).getPrice(), 0.001);
 		
-		System.out.println(PMI.retrievePart(A.getPartNumber()));
-		System.out.println(PMI.retrievePart(X.getPartNumber()));
+		Assert.assertTrue(!PMI.getFinalAssemblies().isEmpty());
+		Assert.assertEquals(4, PMI.getFinalAssemblies().size());
+		Assert.assertEquals(0, PMI.getPurchasePartsByPrice().indexOf(B));
+		//System.out.println(PMI.retrievePart(A.getPartNumber()));
+		//System.out.println(PMI.retrievePart(X.getPartNumber()));
+		
+		Assert.assertTrue(PMI.retrievePart(A.getPartNumber()).equals(A));
+		Assert.assertTrue(!PMI.retrievePart(A.getPartNumber()).equals(B));
+		Assert.assertTrue(!PMI.retrievePart(A.getPartNumber()).equals(1));
+		Assert.assertEquals(("Part [partNumber=" + A.getPartNumber() + ", name=" + A.getName() + ", partType=" + A.getPartType() + ", price=" + A.getPrice()
+				+ ", billOfMaterial=" + A.getBillOfMaterial() + "]"), A.toString());
+		Assert.assertTrue(!cBOMEntry.equals(bBOMEntry));
+		Assert.assertTrue(cBOMEntry.equals(cBOMEntry));
+		Assert.assertTrue(!cBOMEntry.equals("Hi"));
+		Assert.assertTrue(!cBOMEntry.equals(null));
+		
+		
 		
 	}
 } 

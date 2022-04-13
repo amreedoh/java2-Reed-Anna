@@ -48,7 +48,7 @@ public class ApplicationHelper {
 	* @param skillset the skillset to increment.
 	*/
 	public static void incrementSkillsetCount(String skillset) {
-		System.out.println(usersPerSkill.get(skillset));
+		//System.out.println(usersPerSkill.get(skillset));
 		
 		try {
 			if (!usersPerSkill.isEmpty()) {
@@ -75,7 +75,7 @@ public class ApplicationHelper {
 	* @param skillset the skillset to decrement.
 	*/
 	public static void decrementSkillsetCount(String skillset) {
-		System.out.println(skillset + " " + usersPerSkill.get(skillset));
+		//System.out.println(skillset + " " + usersPerSkill.get(skillset));
 		
 		try {
 			if (usersPerSkill.containsKey(skillset)) {
@@ -87,7 +87,7 @@ public class ApplicationHelper {
 			e.printStackTrace();
 		}	
 		
-		System.out.println(skillset + " " + usersPerSkill.get(skillset));
+		//System.out.println(skillset + " " + usersPerSkill.get(skillset));
 	}
 	
 	/**
